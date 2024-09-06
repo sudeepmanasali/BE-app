@@ -1,8 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const dotenv = require('dotenv');
+const helmet = require('helmet');
+dotenv.config();
 
 const server = express();
 
+server.use(helmet());
 server.get("/", (req, res) => {
 
   const data = [
@@ -15,12 +19,14 @@ server.get("/", (req, res) => {
   res.send(data);
 });
 
+const PORT = process.env.PORT || 8081
+
 mongoose
   .connect(
-    `mongodb+srv://sudeep_manasali:Sudeep%401234@googleformclone.urebd.mongodb.net/google_form_clone?retryWrites=true&w=majority`)
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}%401234@googleformclone.urebd.mongodb.net/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`)
   .then(() => {
-    server.listen(8080, () => {
-      console.log("success fully running", 8080);
+    server.listen(PORT, () => {
+      console.log("success fully running", PORT);
     });
   })
   .catch((err) => {
